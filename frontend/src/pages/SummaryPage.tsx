@@ -2,7 +2,11 @@ import NoResultNotice from "../components/NoResultNotice";
 import PageShell from "../components/PageShell";
 import { useAnalysis } from "../analysis/useAnalysis";
 
-/** The full analysis.summary, presented as the headline verdict. */
+/**
+ * The full analysis.summary. Given one large reading panel rather than
+ * several small ones, because this is the only page whose content is
+ * uninterrupted prose.
+ */
 export default function SummaryPage() {
   const { result } = useAnalysis();
 
@@ -15,19 +19,13 @@ export default function SummaryPage() {
   return (
     <PageShell
       path="/analysis/summary"
-      eyebrow="Summary"
-      title="Analysis Summary"
-      lede="The model's overall read on this role, written using only the evidence retrieved from your resume."
+      eyebrow="Analysis"
+      title="Summary"
+      description="Overall assessment based on the available resume evidence."
     >
-      <section className="summary summary--page">
-        <p className="summary__text">{summary}</p>
+      <section className="panel">
+        <p className="prose">{summary}</p>
       </section>
-
-      <p className="page__footnote">
-        This summary is the model's judgement of the retrieved evidence. Open{" "}
-        <strong>Supporting Evidence</strong> to check each claim against your
-        own resume.
-      </p>
     </PageShell>
   );
 }

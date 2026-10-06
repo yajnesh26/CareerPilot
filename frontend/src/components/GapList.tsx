@@ -6,16 +6,18 @@ interface GapListProps {
  * Renders analysis.gaps verbatim. The backend deliberately phrases gaps as
  * "not demonstrated in the provided evidence" rather than asserting the
  * candidate lacks a skill, so no wording is softened or strengthened here.
+ *
+ * The amber marker is a warning icon, not a negative verdict badge.
  */
 export default function GapList({ gaps }: GapListProps) {
   return (
-    <ul className="bullets">
+    <ul className="items">
       {gaps.map((gap) => (
-        <li key={gap} className="bullets__item bullets__item--caution">
-          <span className="bullets__marker" aria-hidden="true">
+        <li key={gap} className="items__item">
+          <span className="items__marker items__marker--warn" aria-hidden="true">
             !
           </span>
-          <span>{gap}</span>
+          {gap}
         </li>
       ))}
     </ul>

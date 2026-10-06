@@ -1,27 +1,32 @@
 import type { AnalyzeResponse } from "../types";
 
 /**
- * Metadata for every analysis sub-page, in the order they should appear on
- * the overview and in the prev/next footer navigation.
+ * Metadata for every analysis sub-page, in the order they appear in the
+ * sidebar, on the overview, and in the prev/next pager.
  *
- * Keeping this in one place means the overview grid and the section pager
- * can never drift out of sync.
+ * This is the single source of navigation truth: the sidebar, the overview
+ * grid, and the pager all read from it, so they cannot drift apart. Paths
+ * match the route table in App.tsx.
  */
 export interface AnalysisSection {
-  /** Route path, absolute. */
+  /** Route path, absolute. Matches the route defined in App.tsx. */
   path: string;
   /** Key for React lists and for locating the previous/next sibling. */
   id: string;
   title: string;
-  /** One-line explanation shown on the overview card. */
+  /** One-line description shown on the overview card. */
   blurb: string;
   /**
-   * Number shown on the overview card. Returns null when a count would be
-   * meaningless, such as the summary, which is always a single narrative.
+   * Number of items in this section. Returns null when the section is a
+   * single narrative rather than a list, i.e. the summary.
    */
   count: (result: AnalyzeResponse) => number | null;
-  /** Plural noun for the count, e.g. "claims", "chunks". */
+  /** Plural noun for the count, e.g. "strengths", "chunks". */
   unit: string;
+  /** Icon key, resolved to an SVG in OverviewCard. */
+  icon: string;
+  /** Accent variant. Drives the icon and hover colour, not the card fill. */
+  tone: "neutral" | "teal" | "amber" | "sky";
 }
 
 export const ANALYSIS_SECTIONS: AnalysisSection[] = [
@@ -29,49 +34,61 @@ export const ANALYSIS_SECTIONS: AnalysisSection[] = [
     path: "/analysis/summary",
     id: "summary",
     title: "Summary",
-    blurb: "The overall evidence-grounded verdict on this role.",
+    blurb: "Overall assessment based on the available resume evidence.",
     count: () => null,
-    unit: "items",
+    unit: "sections",
+    icon: "summary",
+    tone: "neutral",
   },
   {
     path: "/analysis/strengths",
     id: "strengths",
     title: "Strengths",
-    blurb: "Capabilities the retrieved resume evidence directly supports.",
+    blurb: "Skills and experience relevant to this role.",
     count: (result) => result.analysis.strengths.length,
-    unit: "items",
+    unit: "strengths",
+    icon: "strengths",
+    tone: "teal",
   },
   {
     path: "/analysis/gaps",
     id: "gaps",
     title: "Gaps",
-    blurb: "Requirements not demonstrated in the retrieved evidence.",
+    blurb: "Requirements not clearly demonstrated in the resume.",
     count: (result) => result.analysis.gaps.length,
-    unit: "items",
+    unit: "gaps",
+    icon: "gaps",
+    tone: "amber",
   },
   {
     path: "/analysis/limitations",
     id: "limitations",
     title: "Limitations",
-    blurb: "What the available evidence could not settle either way.",
+    blurb: "Things the available evidence cannot determine.",
     count: (result) => result.analysis.limitations.length,
-    unit: "items",
+    unit: "limitations",
+    icon: "limitations",
+    tone: "sky",
   },
   {
     path: "/analysis/evidence",
     id: "evidence",
-    title: "Supporting Evidence",
-    blurb: "Every claim traced to its source, page, and section.",
+    title: "Evidence",
+    blurb: "Resume sections supporting the analysis.",
     count: (result) => result.analysis.evidence.length,
-    unit: "claims",
+    unit: "supporting claims",
+    icon: "evidence",
+    tone: "teal",
   },
   {
     path: "/analysis/retrieval",
     id: "retrieval",
-    title: "Retrieval Debug",
-    blurb: "The raw chunks pulled from the vector store and sent to the model.",
+    title: "Retrieval",
+    blurb: "Resume chunks retrieved for this analysis.",
     count: (result) => result.retrieved_evidence.length,
-    unit: "chunks",
+    unit: "chunks retrieved",
+    icon: "retrieval",
+    tone: "teal",
   },
 ];
 

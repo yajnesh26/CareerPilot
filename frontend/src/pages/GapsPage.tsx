@@ -21,30 +21,23 @@ export default function GapsPage() {
   return (
     <PageShell
       path="/analysis/gaps"
-      eyebrow="Gaps"
+      eyebrow="Analysis"
       title="Gaps"
-      lede="Requirements that were not demonstrated in the retrieved evidence. This is a statement about the evidence available, not a verdict on the candidate."
-      aside={
-        <span className="badge badge--caution">
-          {gaps.length} {gaps.length === 1 ? "item" : "items"}
-        </span>
-      }
+      description="Requirements not clearly demonstrated in the resume."
+      meta={`${gaps.length} ${gaps.length === 1 ? "gap" : "gaps"}`}
     >
-      <div className="notice">
-        <p>
-          A requirement listed here means the model could not find support for
-          it in the retrieved resume evidence. It does not mean the candidate
-          is incapable of it.
-        </p>
-      </div>
+      <p className="page__note">
+        A requirement listed here was not found in the retrieved resume
+        evidence. It does not mean the candidate is incapable of it.
+      </p>
 
-      {gaps.length === 0 ? (
-        <p className="page__empty">
-          The model did not identify any gaps for this role.
-        </p>
-      ) : (
-        <GapList gaps={gaps} />
-      )}
+      <section className="panel panel--amber">
+        {gaps.length === 0 ? (
+          <p className="page__empty">No gaps were found for this role.</p>
+        ) : (
+          <GapList gaps={gaps} />
+        )}
+      </section>
     </PageShell>
   );
 }

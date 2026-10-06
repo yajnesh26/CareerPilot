@@ -19,30 +19,25 @@ export default function LimitationsPage() {
   return (
     <PageShell
       path="/analysis/limitations"
-      eyebrow="Limitations"
+      eyebrow="Analysis"
       title="Limitations"
-      lede="What the available evidence could not settle, in either direction. Reporting these is a feature of the system, not an apology for it."
-      aside={
-        <span className="badge">
-          {limitations.length} {limitations.length === 1 ? "item" : "items"}
-        </span>
-      }
+      description="Things the available evidence cannot determine."
+      meta={`${limitations.length} ${limitations.length === 1 ? "item" : "items"}`}
     >
-      <div className="notice notice--accent">
-        <p>
-          <strong>Absence of evidence is not evidence of absence.</strong> These
-          items were undetermined from the chunks that were retrieved, not
-          concluded to be false.
-        </p>
-      </div>
+      <p className="page__note">
+        Absence of evidence is not evidence of absence. These items were
+        undetermined from the retrieved chunks, not concluded to be false.
+      </p>
 
-      {limitations.length === 0 ? (
-        <p className="page__empty">
-          The model did not report any limitations for this role.
-        </p>
-      ) : (
-        <LimitationsList limitations={limitations} />
-      )}
+      <section className="panel">
+        {limitations.length === 0 ? (
+          <p className="page__empty">
+            No limitations were reported for this role.
+          </p>
+        ) : (
+          <LimitationsList limitations={limitations} />
+        )}
+      </section>
     </PageShell>
   );
 }

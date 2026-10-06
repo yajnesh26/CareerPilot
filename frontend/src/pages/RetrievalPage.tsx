@@ -21,53 +21,35 @@ export default function RetrievalPage() {
   return (
     <PageShell
       path="/analysis/retrieval"
-      eyebrow="Retrieval Debug"
-      title="Retrieved Evidence"
-      lede="The raw chunks pulled from the vector store, shown exactly as they were provided to the generation model."
-      aside={
-        <span className="badge badge--dark">
-          {chunks.length} {chunks.length === 1 ? "chunk" : "chunks"}
-        </span>
-      }
+      eyebrow="Analysis"
+      title="Retrieval"
+      description="Resume chunks retrieved for this analysis."
+      meta={`${chunks.length} ${chunks.length === 1 ? "chunk" : "chunks"}`}
     >
-      <p className="page__lede page__lede--tight">
+      <p className="page__note">
         These are the exact text fragments retrieved from the vector store and
-        provided to the generation model. Only this evidence was available
-        when the analysis was produced.
+        provided to the generation model.
       </p>
 
       {chunks.length === 0 ? (
-        <div className="retrieval retrieval--static">
-          <div className="retrieval__body">
-            <p className="retrieval__empty">
-              No evidence was retrieved. The resume may not be indexed yet.
-            </p>
-          </div>
-        </div>
+        <p className="page__empty">
+          No chunks were retrieved. The resume may not be indexed yet.
+        </p>
       ) : (
-        <div className="retrieval retrieval--static">
-          <div className="retrieval__body">
-            <ol className="retrieval__list">
-              {chunks.map((item, index) => (
-                <li
-                  key={`${item.source}-${item.page}-${index}`}
-                  className="retrieval__item"
-                >
-                  <div className="retrieval__itemHeader">
-                    <span className="retrieval__index">
-                      EVIDENCE {index + 1}
-                    </span>
-                    <span className="retrieval__source">
-                      {item.source} &middot; Page {item.page} &middot;{" "}
-                      {item.section}
-                    </span>
-                  </div>
-                  <pre className="retrieval__text">{item.text}</pre>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
+        <ol className="chunkList">
+          {chunks.map((item, index) => (
+            <li key={`${item.source}-${item.page}-${index}`} className="chunk">
+              <div className="chunk__meta">
+                <span className="chunk__index">{index + 1}</span>
+                <span className="chunk__source">{item.source}</span>
+                <span className="chunk__ref">
+                  Page {item.page} &middot; {item.section}
+                </span>
+              </div>
+              <pre className="chunk__text">{item.text}</pre>
+            </li>
+          ))}
+        </ol>
       )}
     </PageShell>
   );

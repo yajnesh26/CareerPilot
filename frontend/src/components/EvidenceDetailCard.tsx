@@ -5,45 +5,21 @@ interface EvidenceDetailCardProps {
 }
 
 /**
- * Full-width evidence card for the dedicated page.
- *
- * The layout is deliberate: the claim sits in a bordered block on top, the
- * citation in a contrasting band below it, joined by a connector. That
- * vertical pairing is what makes "this claim came from here" readable at a
- * glance.
+ * One claim and the resume location it came from. The citation sits below a
+ * hairline rule in monospace, so the source, page, and section stay legible
+ * and are never confused with the claim text itself.
  */
 export default function EvidenceDetailCard({ item }: EvidenceDetailCardProps) {
   return (
-    <li className="evidenceDetail">
-      <div className="evidenceDetail__claimBlock">
-        <span className="evidenceDetail__label">Claim</span>
-        <p className="evidenceDetail__claim">{item.claim}</p>
-      </div>
+    <li className="evidenceItem">
+      <p className="evidenceItem__claim">{item.claim}</p>
 
-      <div className="evidenceDetail__connector" aria-hidden="true">
-        <span className="evidenceDetail__connectorLine" />
-        <span className="evidenceDetail__connectorText">supported by</span>
-      </div>
+      <div className="evidenceItem__rule" />
 
-      <div className="evidenceDetail__sourceBlock">
-        <span className="evidenceDetail__label evidenceDetail__label--source">
-          Source
-        </span>
-
-        <dl className="evidenceDetail__meta">
-          <div className="evidenceDetail__metaRow">
-            <dt>Document</dt>
-            <dd className="evidenceDetail__doc">{item.source}</dd>
-          </div>
-          <div className="evidenceDetail__metaRow">
-            <dt>Page</dt>
-            <dd>{item.page}</dd>
-          </div>
-          <div className="evidenceDetail__metaRow">
-            <dt>Section</dt>
-            <dd>{item.section}</dd>
-          </div>
-        </dl>
+      <div className="evidenceItem__meta">
+        <span className="evidenceItem__source">{item.source}</span>
+        <span className="evidenceItem__ref">Page {item.page}</span>
+        <span className="evidenceItem__ref">{item.section}</span>
       </div>
     </li>
   );

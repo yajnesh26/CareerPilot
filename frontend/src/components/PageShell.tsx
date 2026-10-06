@@ -5,11 +5,12 @@ import { adjacentSections } from "../routes/analysisSections";
 interface PageShellProps {
   /** Route path of this page, used to work out previous/next links. */
   path: string;
+  /** Small uppercase label above the title, e.g. "ANALYSIS". */
   eyebrow: string;
   title: string;
-  lede: string;
-  /** Optional trailing element, e.g. a count badge. */
-  aside?: ReactNode;
+  description: string;
+  /** Optional trailing metadata, e.g. "8 gaps". */
+  meta?: ReactNode;
   children: ReactNode;
 }
 
@@ -22,8 +23,8 @@ export default function PageShell({
   path,
   eyebrow,
   title,
-  lede,
-  aside,
+  description,
+  meta,
   children,
 }: PageShellProps) {
   const { previous, next } = adjacentSections(path);
@@ -31,23 +32,21 @@ export default function PageShell({
   return (
     <div className="page">
       <Link to="/analysis" className="backlink">
-        <span aria-hidden="true">&larr;</span> Back to Analysis
+        Analysis
       </Link>
 
       <div className="page__head">
-        <div className="page__headText">
-          <p className="page__eyebrow">{eyebrow}</p>
-          <h1 className="page__title">{title}</h1>
-          <p className="page__lede">{lede}</p>
-        </div>
-        {aside && <div className="page__aside">{aside}</div>}
+        <p className="page__eyebrow">{eyebrow}</p>
+        <h1 className="page__title">{title}</h1>
+        <p className="page__lede">{description}</p>
+        {meta && <p className="page__meta">{meta}</p>}
       </div>
 
       <div className="page__body">{children}</div>
 
       <nav className="pager" aria-label="Analysis sections">
         {previous ? (
-          <Link to={previous.path} className="pager__link pager__link--prev">
+          <Link to={previous.path} className="pager__link">
             <span className="pager__direction">Previous</span>
             <span className="pager__target">{previous.title}</span>
           </Link>

@@ -1,5 +1,6 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { AnalysisProvider } from "./analysis/AnalysisProvider";
+import SideNav from "./components/SideNav";
 import TopBar from "./components/TopBar";
 import AnalyzePage from "./pages/AnalyzePage";
 import AnalysisOverviewPage from "./pages/AnalysisOverviewPage";
@@ -17,11 +18,19 @@ import RetrievalPage from "./pages/RetrievalPage";
  * result; navigating between /analysis/* re-renders from context instead of
  * issuing another POST /analyze.
  */
-export default function App() {
+function Shell() {
+  const { pathname } = useLocation();
+
+  // The rail belongs to the analysis section. On the analyze page it would
+  // point at six empty pages, so it is only rendered under /analysis.
+  const showSideNav = pathname.startsWith("/analysis");
+
   return (
-    <AnalysisProvider>
-      <div className="app">
-        <TopBar />
+    <div className="app">
+      <TopBar />
+
+      <div className="shell">
+        {showSideNav && <SideNav />}
 
         <main className="main">
           <Routes>
@@ -37,14 +46,24 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
-
-        <footer className="footer">
-          <p>
-            Grounded in retrieved resume evidence. No match score is produced,
-            because the model is not permitted to invent one.
-          </p>
-        </footer>
       </div>
+
+      <footer className="footer">
+        <div className="footer__inner">
+          <p>
+            Analysis is based only on the resume evidence that was retrieved.
+            No match score is calculated.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AnalysisProvider>
+      <Shell />
     </AnalysisProvider>
   );
 }

@@ -20,29 +20,20 @@ export default function EvidencePage() {
   return (
     <PageShell
       path="/analysis/evidence"
-      eyebrow="Evidence"
-      title="Supporting Evidence"
-      lede="Every claim in this analysis, paired with the exact resume coordinates that support it. Check each citation against your own document."
-      aside={
-        <span className="badge badge--accent">
-          {evidence.length} {evidence.length === 1 ? "claim" : "claims"}
-        </span>
-      }
+      eyebrow="Analysis"
+      title="Evidence"
+      description="Resume sections supporting the analysis."
+      meta={`${evidence.length} ${evidence.length === 1 ? "claim" : "claims"}`}
     >
-      <div className="notice notice--accent">
-        <p>
-          CareerPilot does not generate an opinion and then search for support.
-          It retrieves the evidence first, then reasons only from what it
-          found.
-        </p>
-      </div>
+      <p className="page__note">
+        Each claim is listed with the resume location it came from, so you can
+        check it against your own document.
+      </p>
 
       {evidence.length === 0 ? (
-        <p className="page__empty">
-          The model returned no supporting citations for this role.
-        </p>
+        <p className="page__empty">No supporting claims were returned.</p>
       ) : (
-        <ul className="evidenceDetailList">
+        <ul className="evidenceList">
           {evidence.map((item, index) => (
             <EvidenceDetailCard
               key={`${item.source}-${item.page}-${item.section}-${index}`}

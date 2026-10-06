@@ -20,23 +20,18 @@ export default function StrengthsPage() {
   return (
     <PageShell
       path="/analysis/strengths"
-      eyebrow="Strengths"
+      eyebrow="Analysis"
       title="Strengths"
-      lede="Capabilities the retrieved resume evidence supports directly. Each one traces back to a specific location in the indexed resume."
-      aside={
-        <span className="badge badge--positive">
-          {strengths.length} {strengths.length === 1 ? "item" : "items"}
-        </span>
-      }
+      description="Skills and experience relevant to this role."
+      meta={`${strengths.length} ${strengths.length === 1 ? "strength" : "strengths"}`}
     >
-      {strengths.length === 0 ? (
-        <p className="page__empty">
-          The model did not identify any strengths for this role from the
-          retrieved evidence.
-        </p>
-      ) : (
-        <StrengthList strengths={strengths} />
-      )}
+      <section className="panel panel--teal">
+        {strengths.length === 0 ? (
+          <p className="page__empty">No strengths were found for this role.</p>
+        ) : (
+          <StrengthList strengths={strengths} />
+        )}
+      </section>
     </PageShell>
   );
 }

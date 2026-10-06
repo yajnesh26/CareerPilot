@@ -10,7 +10,7 @@ from app.config import GEMINI_API_KEY
 
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-GENERATION_MODEL = "gemini-3.8-flash"
+GENERATION_MODEL = "gemini-3.5-flash-lite"
 
 
 class EvidenceItem(BaseModel):
@@ -172,6 +172,18 @@ Important:
 
             if response.text:
                 break
+
+        except errors.ClientError as error:
+            # A quota exhaustion is not a transient server fault, so the
+            # retry loop below cannot help. Retrying would only burn more
+            # of an already exhausted quota.
+            if error.code != 429:
+                raise
+
+            raise RuntimeError(
+                "Gemini generation quota is exhausted. Wait for the "
+                "quota to reset or use another available API project."
+            ) from error
 
         except errors.ServerError as error:
             print(f"Gemini returned a temporary server error: {error}")

@@ -4,3 +4,5 @@ backend/**/__pycache__/
 backend/**/*.pyc
 
 test-data/
+CareerPilot_AI_Solution_Brief.pdf
+CareerPilot_Gemini_Failure_Fix.pdf
